@@ -22,6 +22,16 @@ namespace SelectFileToUsb
 
         public MainWindow()
         {
+            if(Directory.GetFiles(@"..\..\semaphore").Count() > 0){
+                MessageBox.Show("他で使用中です。しばらくしてから起動してください");
+                Close();
+            }
+
+            // 排他制御できるように、自らのユーザー名を付けたファイルを作成して保存しておく
+            string spName = @"..\..\semaphore\" + Environment.UserName + ".txt";            
+            var fs = File.Create(spName);
+            fs.Close();
+                        
             LvFileNames = new ObservableCollection<string>();
             LvFilePaths = new List<string>();
 
